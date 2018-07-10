@@ -19,14 +19,11 @@ int main()
 
         print_ip_pool(ip_pool);
 
-        auto v = filter(ip_pool, 1);
-        print_ip_pool(v);
+        print_ip_pool(filter(ip_pool, 1));
 
-        v = filter(ip_pool, 46, 70);
-        print_ip_pool(v);
+        print_ip_pool(filter(ip_pool, 46, 70));
 
-        v = filter_any(ip_pool, 46);
-        print_ip_pool(v);
+        print_ip_pool(filter_any(ip_pool, 46));
     }
     catch(const std::exception& e)
     {
