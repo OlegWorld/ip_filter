@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 project(ip_filter)
 
 find_package(GTest REQUIRED)
@@ -21,3 +21,5 @@ set_target_properties(filter_tests PROPERTIES
         )
 
 target_link_libraries(filter_tests ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+install(TARGETS ip_filter RUNTIME DESTINATION bin)
