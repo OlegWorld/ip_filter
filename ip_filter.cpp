@@ -5,7 +5,6 @@ const char* ip_parser_error::what() const noexcept
     return "Error during parsing ip address";
 }
 
-
 ip_address parse_ip(const std::string& str)
 {
     ip_address addr;
