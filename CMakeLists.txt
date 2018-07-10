@@ -27,3 +27,13 @@ install(TARGETS ip_filter RUNTIME DESTINATION bin)
 enable_testing()
 
 add_test(test filter_tests)
+
+set(CPACK_GENERATOR DEB)
+
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "1")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+set(CPACK_PACKAGE_CONTACT osmironov@gmail.com)
+
+include(CPack)
