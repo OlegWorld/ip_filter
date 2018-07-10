@@ -49,7 +49,7 @@ ip_vector filter_any(const ip_vector& ip_pool, uint8_t value)
 {
     ip_vector pool;
     for (const auto& ip : ip_pool)
-        if (std::any_of(ip.begin(), ip.end(), [value](const auto& byte){ return byte == value; }))
+        if (std::any_of(ip.begin(), ip.end(), [value](uint8_t byte){ return byte == value; }))
             pool.push_back(ip);
 
     return pool;

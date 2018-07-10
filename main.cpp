@@ -13,7 +13,7 @@ int main()
             ip_pool.emplace_back(parse_ip(line));
         }
 
-        std::sort(ip_pool.begin(), ip_pool.end(), [](const auto& lhs, const auto& rhs) {
+        std::sort(ip_pool.begin(), ip_pool.end(), [](const ip_address & lhs, const ip_address & rhs) {
             return std::tie(lhs[0], lhs[1], lhs[2], lhs[3]) >= std::tie(rhs[0], rhs[1], rhs[2], rhs[3]);
         });
 
