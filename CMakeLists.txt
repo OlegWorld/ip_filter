@@ -23,3 +23,7 @@ set_target_properties(filter_tests PROPERTIES
 target_link_libraries(filter_tests ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS ip_filter RUNTIME DESTINATION bin)
+
+enable_testing()
+
+add_test(test filter_tests)
