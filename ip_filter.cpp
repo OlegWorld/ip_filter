@@ -19,7 +19,7 @@ ip_address parse_ip(const std::string& str)
         start = stop + 1;
         stop = str.find_first_of(sep, start);
 
-        if (stop == std::string::npos && i != 3)
+        if (stop == std::string::npos && i != 2)
             throw ip_parser_error();
     }
 
