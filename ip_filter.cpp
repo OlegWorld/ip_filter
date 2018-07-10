@@ -1,37 +1,29 @@
-#include <cassert>
-#include <cstdlib>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <tuple>
+#include "ip_filter.h"
 
-// ("",  '.') -> [""]
-// ("11", '.') -> ["11"]
-// ("..", '.') -> ["", "", ""]
-// ("11.", '.') -> ["11", ""]
-// (".11", '.') -> ["", "11"]
-// ("11.22", '.') -> ["11", "22"]
-using ip_vector = std::vector<std::vector<uint8_t>>;
-
-std::vector<uint8_t > split(const std::string& str, char d)
+const char* ip_parser_error::what() const noexcept
 {
-    std::vector<uint8_t> r;
-    r.reserve(4);
+    return "Error during parsing ip address";
+}
+
+
+ip_address parse_ip(const std::string& str)
+{
+    ip_address addr;
+    const char sep = '.';
 
     std::string::size_type start = 0;
-    std::string::size_type stop = str.find_first_of(d);
-    while(stop != std::string::npos)
+    std::string::size_type stop = str.find_first_of(sep);
+    for (size_t i = 0; i < 4; i++)
     {
-        r.emplace_back(stoul(str.substr(start, stop - start)));
-
+        addr[i] = static_cast<uint8_t>(stoul(str.substr(start, stop - start)));
         start = stop + 1;
-        stop = str.find_first_of(d, start);
+        stop = str.find_first_of(sep, start);
+
+        if (stop == std::string::npos && i != 3)
+            throw ip_parser_error();
     }
 
-    r.emplace_back(stoul(str.substr(start)));
-
-    return r;
+    return addr;
 }
 
 ip_vector filter(const ip_vector& ip_pool, uint8_t value)
@@ -64,7 +56,7 @@ ip_vector filter_any(const ip_vector& ip_pool, uint8_t value)
     return pool;
 }
 
-void print(const ip_vector& ip_pool)
+void print_ip_pool(const ip_vector& ip_pool) noexcept
 {
     for(const auto& ip : ip_pool)
     {
@@ -79,38 +71,4 @@ void print(const ip_vector& ip_pool)
     }
 }
 
-int main(int argc, char const *argv[])
-{
-    try
-    {
-        ip_vector ip_pool;
 
-        for(std::string line; std::getline(std::cin, line);)
-        {
-            line.resize(line.find_first_of('\t'));
-
-            ip_pool.emplace_back(split(line, '.'));
-        }
-
-        std::sort(ip_pool.begin(), ip_pool.end(), [](const auto& lhs, const auto& rhs) {
-            return std::tie(lhs[0], lhs[1], lhs[2], lhs[3]) >= std::tie(rhs[0], rhs[1], rhs[2], rhs[3]);
-        });
-
-        print(ip_pool);
-
-        auto v = filter(ip_pool, 1);
-        print(v);
-
-        v = filter(ip_pool, 46, 70);
-        print(v);
-
-        v = filter_any(ip_pool, 46);
-        print(v);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-
-    return 0;
-}
