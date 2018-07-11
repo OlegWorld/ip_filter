@@ -59,11 +59,11 @@ void print_ip_pool(const ip_vector& ip_pool) noexcept
 {
     for(const auto& ip : ip_pool)
     {
-        for(const auto& ip_part : ip)
+        for(const auto& byte : ip)
         {
-            std::cout << unsigned(ip_part);
+            std::cout << unsigned(byte);
 
-            if (ip_part != ip.back())
+            if (&byte != &ip.back())
                 std::cout << ".";
         }
         std::cout << std::endl;

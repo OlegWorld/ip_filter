@@ -99,6 +99,7 @@ TEST(print_test, cout_test)
     v.emplace_back(parse_ip("56.67.0.5"));
     v.emplace_back(parse_ip("191.168.0.6"));
     v.emplace_back(parse_ip("56.15.0.1"));
+    v.emplace_back(parse_ip("217.82.152.217"));
 
     std::ostringstream os;
     auto oldbuf = std::cout.rdbuf();
@@ -106,7 +107,7 @@ TEST(print_test, cout_test)
 
     print_ip_pool(v);
 
-    std::string ref("192.168.0.1\n192.165.6.4\n193.6.0.1\n191.168.0.1\n192.1.76.43\n6.168.0.1\n56.67.0.5\n191.168.0.6\n56.15.0.1\n");
+    std::string ref("192.168.0.1\n192.165.6.4\n193.6.0.1\n191.168.0.1\n192.1.76.43\n6.168.0.1\n56.67.0.5\n191.168.0.6\n56.15.0.1\n217.82.152.217\n");
 
     EXPECT_EQ(os.str(), ref);
 
