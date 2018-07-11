@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "gtest/gtest.h"
 #include "ip_filter.h"
 
@@ -85,7 +86,7 @@ TEST(filter_any_test, filter_any)
     EXPECT_EQ(v[3], ref4);
 }
 
-TEST(print_test, nothrow_test)
+TEST(print_test, cout_test)
 {
     ip_vector v;
 
@@ -99,7 +100,17 @@ TEST(print_test, nothrow_test)
     v.emplace_back(parse_ip("191.168.0.6"));
     v.emplace_back(parse_ip("56.15.0.1"));
 
-    EXPECT_NO_THROW(print_ip_pool(v));
+    std::ostringstream os;
+    auto oldbuf = std::cout.rdbuf();
+    std::cout.rdbuf(os.rdbuf());
+
+    print_ip_pool(v);
+
+    std::string ref("192.168.0.1\n192.165.6.4\n193.6.0.1\n191.168.0.1\n192.1.76.43\n6.168.0.1\n56.67.0.5\n191.168.0.6\n56.15.0.1\n");
+
+    EXPECT_EQ(os.str(), ref);
+
+    std::cout.rdbuf(oldbuf);
 }
 
 int main(int argc, char **argv)
